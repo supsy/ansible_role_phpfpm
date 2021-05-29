@@ -1,0 +1,7 @@
+max_execution_time = 60
+memory_limit = {{ phpfpm__php_global_memory_limit }}
+post_max_size = 128M
+upload_max_filesize = 128M
+max_file_uploads = 30
+
+date.timezone = {{ phpfpm__php_global_timezone }}

@@ -1,0 +1,22 @@
+# Molecule managed
+
+---
+package:
+  php7.3-fpm:
+    installed: true
+
+service:
+  php7.3-fpm:
+    enabled: true
+    running: true
+
+file:
+  /etc/php/7.3/fpm/pool.d/default.conf:
+    exists: true
+    contains:
+      - '[default]'
+      - user = www-data
+      - pm.start_servers = 6
+      - php_admin_value[open_basedir] = "/var/www/vhosts/$pool:/usr/share/php:/tmp"
+  /var/www/vhosts/default/logs/php_error.log:
+    exists: true

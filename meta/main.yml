@@ -1,0 +1,25 @@
+galaxy_info:
+  author: supsy
+  role_name: phpfpm
+  description: Installation for phpfpm
+
+  issue_tracker_url: https://gitlab.com/supsy/ansible/role_phpfpm
+
+  license: MIT
+
+  min_ansible_version: 2.4
+
+  platforms:
+    - name: Debian
+      versions:
+        - stretch
+        - buster
+    - name: Ubuntu
+      versions:
+        - focal
+
+  galaxy_tags: 
+    - 'phpfpm'
+    - 'php'
+
+dependencies: []

@@ -1,0 +1,13 @@
+---
+- name: Prepare
+  hosts: all
+  gather_facts: False
+
+  tasks: 
+    - name: Create vhost logs directory
+      file:
+        path: '/var/www/vhosts/default/logs/'
+        owner: root
+        group: root
+        mode: '0755'
+        state: directory

@@ -1,0 +1,12 @@
+---
+# vars file for roles/phpfpm pools
+
+- name: "install | vhosts | Create php fpm pool"
+  include_tasks: fpm_pool.yml
+  loop: "{{ phpfpm__pools }}"
+
+- name: config | fpm_pools | Remove preinstalled php fpm pool
+  file:
+    path: '{{ phpfpm__server_app_path }}/pool.d/www.conf'
+    state: absent
+  notify: 'restart php{{ phpfpm__version }}-fpm'

@@ -1,0 +1,50 @@
+{{ '; FILE MANAGED BY ANSIBLE' if phpfpm__show_ansible_management -}}
+
+[{{ pool.name }}]
+
+user = {{ pool.username }}
+group = {{ pool.username }}
+
+listen = /run/php/php{{phpfpm__version}}-fpm-$pool.sock
+
+listen.owner = {{ pool.username }}
+listen.group = www-data
+listen.mode = 0660
+
+pm = dynamic
+pm.max_children = {{ pool.max_children }}
+; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
+pm.start_servers = {{ pool.start_servers }}
+pm.min_spare_servers = {{ pool.min_spare_servers }}
+pm.max_spare_servers = {{ pool.max_spare_servers }}
+
+pm.status_path = /fpm{{ phpfpm__version }}-status-{{ pool.name }}
+
+ping.path = /__ping
+ping.response = pong
+
+{% if phpfpm__version == '5.6' %}
+chdir = /
+{% endif %}
+
+php_admin_value[error_log] = {{ phpfpm__vhost_root }}/$pool/logs/php_error.log
+php_admin_flag[log_errors] = on
+php_admin_value[open_basedir] = "{{ pool.open_basedir | join(':') }}"
+php_admin_value[upload_tmp_dir] = {{ phpfpm__vhost_root }}/$pool/tmp
+{% if pool.enable_redis_session_handler %}
+php_admin_value[session.save_handler] = redis
+php_admin_value[session.save_path] = "{{ pool.redis_uri | join(', ') }}"
+{% else %}
+php_admin_value[session.save_path] = {{ phpfpm__vhost_root }}/$pool/sessions
+{% endif %}
+
+{% if pool.enable_slowlog %}
+slowlog = {{ phpfpm__vhost_root }}/$pool/logs/php_slow.log
+request_slowlog_timeout = 3s
+{% endif %}
+
+{% if 'additional_php_admin_values' in pool %}
+{%     for key, value in pool.additional_php_admin_values.items() %}
+php_admin_value[{{ key }}] = {{ value }}
+{%     endfor -%}
+{% endif %}

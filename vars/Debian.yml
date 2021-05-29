@@ -1,0 +1,19 @@
+---
+# vars file for roles/phpfpm
+
+phpfpm__supported_versions:
+  - "7.0"
+  - "7.2"
+  - "7.3"
+  - "7.4"
+
+phpfpm__server_app_path: "/etc/php/{{ phpfpm__version }}/fpm"
+phpfpm__packages:
+  - "php{{ phpfpm__version }}"
+  - "php{{ phpfpm__version }}-fpm"
+  - "php{{ phpfpm__version }}-cli"
+  - "php{{ phpfpm__version }}-common"
+
+phpfpm__service_name: "php{{ phpfpm__version }}-fpm"
+
+phpfpm__additional_php_modules_without_version: []

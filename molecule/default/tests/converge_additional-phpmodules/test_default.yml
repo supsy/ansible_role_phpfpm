@@ -1,0 +1,13 @@
+# Molecule managed
+
+---
+package:
+  php7.3-fpm:
+    installed: true
+  php7.3-mysql:
+    installed: true
+
+service:
+  php7.3-fpm:
+    enabled: true
+    running: true

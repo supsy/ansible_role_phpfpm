@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  
+  roles:
+    - role: phpfpm
+      vars:
+        phpfpm__version: '7.3'
+        phpfpm__pools:
+          - name: default
+        phpfpm__additional_php_modules:
+          - mysql
