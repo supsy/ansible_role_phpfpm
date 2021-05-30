@@ -22,7 +22,7 @@ molecule:
   variables:
     DOCKER_HOST: "tcp://docker:2375"
     PY_COLORS: 1
-    GIT_CLONE_PATH: $CI_BUILDS_DIR/acmesh
+    GIT_CLONE_PATH: $CI_BUILDS_DIR/phpfpm
   stage: test
   script:
     - molecule test
