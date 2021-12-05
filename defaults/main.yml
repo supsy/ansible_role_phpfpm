@@ -13,14 +13,14 @@ phpfpm__php_global_memory_limit: 128M
 
 phpfpm__additional_php_modules: []
 phpfpm__vhost_root: "/var/www/vhosts"
-phpfpm_pool_defaults_username: www-data
-phpfpm_pool_defaults_open_basedir:
+phpfpm__pool_defaults_username: www-data
+phpfpm__pool_defaults_open_basedir:
   - "{{ phpfpm__vhost_root }}/$pool"
   - /usr/share/php
   - /tmp
-phpfpm_pool_defaults_max_children: 100
-phpfpm_pool_defaults_min_spare_servers: 2
-phpfpm_pool_defaults_max_spare_servers: 10
-phpfpm_pool_defaults_enable_slowlog: False
+phpfpm__pool_defaults_max_children: 100
+phpfpm__pool_defaults_min_spare_servers: 2
+phpfpm__pool_defaults_max_spare_servers: 10
+phpfpm__pool_defaults_enable_slowlog: False
 
 phpfpm__pools: []

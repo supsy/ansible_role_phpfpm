@@ -12,27 +12,27 @@
 
 - name: install | fpm_pool | Set pool defaults username 
   set_fact:
-    pool: "{{ pool | combine({'username': phpfpm_pool_defaults_username}) }}"
+    pool: "{{ pool | combine({'username': phpfpm__pool_defaults_username}) }}"
   when: pool.username is not defined
 
 - name: install | fpm_pool | Set pool defaults open_basedir 
   set_fact:
-    pool: "{{ pool | combine({'open_basedir': phpfpm_pool_defaults_open_basedir}) }}"
+    pool: "{{ pool | combine({'open_basedir': phpfpm__pool_defaults_open_basedir}) }}"
   when: pool.open_basedir is not defined
 
 - name: install | fpm_pool | Set pool defaults max_children 
   set_fact:
-    pool: "{{ pool | combine({'max_children': phpfpm_pool_defaults_max_children}) }}"
+    pool: "{{ pool | combine({'max_children': phpfpm__pool_defaults_max_children}) }}"
   when: pool.max_children is not defined
 
 - name: install | fpm_pool | Set pool defaults min_spare_servers 
   set_fact:
-    pool: "{{ pool | combine({'min_spare_servers': phpfpm_pool_defaults_min_spare_servers}) }}"
+    pool: "{{ pool | combine({'min_spare_servers': phpfpm__pool_defaults_min_spare_servers}) }}"
   when: pool.min_spare_servers is not defined
 
 - name: install | fpm_pool | Set pool defaults max_spare_servers 
   set_fact:
-    pool: "{{ pool | combine({'max_spare_servers': phpfpm_pool_defaults_max_spare_servers}) }}"
+    pool: "{{ pool | combine({'max_spare_servers': phpfpm__pool_defaults_max_spare_servers}) }}"
   when: pool.max_spare_servers is not defined
 
 - name: install | fpm_pool | Set pool defaults start_servers 
@@ -47,7 +47,7 @@
 
 - name: install | fpm_pool | Set pool defaults enable_slowlog
   set_fact:
-    pool: "{{ pool | combine({'enable_slowlog': phpfpm_pool_defaults_enable_slowlog}) }}"
+    pool: "{{ pool | combine({'enable_slowlog': phpfpm__pool_defaults_enable_slowlog}) }}"
   when: pool.enable_slowlog is not defined
 
 - name: config | fpm_pool | Remove preinstalled php fpm pool
