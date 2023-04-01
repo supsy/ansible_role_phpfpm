@@ -2,19 +2,19 @@
 # tasks file for roles/phpfpm
 
 - name: Include meta vars
-  include_vars:
+  ansible.builtin.include_vars:
     file: meta/main.yml
     name: meta
 
 - name: Verify OS compatibility
-  assert:
+  ansible.builtin.assert:
     that:
       - ansible_distribution_release in (meta.galaxy_info.platforms | selectattr('name', 'search', ansible_distribution) | first).versions
     success_msg: "{{ ansible_distribution }} {{ ansible_distribution_release }} ({{ ansible_os_family }})"
     fail_msg: "{{ ansible_distribution }} {{ ansible_distribution_release }} ({{ ansible_os_family }}) not supported by Role!"
 
 - name: Add the OS specific variables
-  include_vars:
+  ansible.builtin.include_vars:
     file: "{{ item }}"
   when: lookup('fileglob', "vars/" ~ item, wantlist=True, errors='ignore') | length > 0
   loop:
@@ -22,29 +22,29 @@
     - "{{ ansible_distribution }}/{{ ansible_distribution_release }}.yml"
 
 - name: Verify required version parameter
-  assert:
+  ansible.builtin.assert:
     that:
       - phpfpm__version
       - phpfpm__version in phpfpm__supported_versions
     fail_msg: PHP FPM version not defined or not supported!
 
 - name: Verify required parameters
-  assert:
+  ansible.builtin.assert:
     that:
       - phpfpm__pools
     fail_msg: Required parameters not set! Please check README for required parameters!
 
 - name: Include task install
-  include_tasks: install.yml
+  ansible.builtin.include_tasks: install.yml
 
 - name: Include task fpm_pools
-  include_tasks: config/fpm_pools.yml
+  ansible.builtin.include_tasks: config/fpm_pools.yml
 
 - name: Include task fpm_php_config
-  include_tasks: config/php.yml
+  ansible.builtin.include_tasks: config/php.yml
 
 - name: Start and enable {{ phpfpm__service_name }}
-  service: 
+  ansible.builtin.service: 
     name: "{{ phpfpm__service_name }}"
     state: started
     enabled: yes

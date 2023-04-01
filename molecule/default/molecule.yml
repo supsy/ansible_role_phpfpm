@@ -28,4 +28,4 @@ provisioner:
     ssh_connection:
       pipelining: True
 verifier:
-  name: goss
+  name: ansible
