@@ -7,18 +7,18 @@ galaxy_info:
 
   license: MIT
 
-  min_ansible_version: 2.4
+  min_ansible_version: "5"
 
   platforms:
     - name: Debian
       versions:
-        - stretch
         - buster
         - bullseye
     - name: Ubuntu
       versions:
         - bionic
         - focal
+        - jammy
 
   galaxy_tags: 
     - 'phpfpm'

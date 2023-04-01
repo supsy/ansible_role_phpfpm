@@ -1,72 +1,72 @@
 ---
 # vars file for roles/phpfpm pools
 
-- name: install | fpm_pool | Validate arguments
-  assert:
+- name: Config | fpm_pool | Validate arguments
+  ansible.builtin.assert:
     that:
       - item.name
 
-- name: install | fpm_pool | Set pool work variable
-  set_fact:
+- name: Config | fpm_pool | Set pool work variable
+  ansible.builtin.set_fact:
     pool: "{{ item }}"
 
-- name: install | fpm_pool | Set pool defaults username 
-  set_fact:
+- name: Config | fpm_pool | Set pool defaults username 
+  ansible.builtin.set_fact:
     pool: "{{ pool | combine({'username': phpfpm__pool_defaults_username}) }}"
   when: pool.username is not defined
 
-- name: install | fpm_pool | Set pool defaults open_basedir 
-  set_fact:
+- name: Config | fpm_pool | Set pool defaults open_basedir 
+  ansible.builtin.set_fact:
     pool: "{{ pool | combine({'open_basedir': phpfpm__pool_defaults_open_basedir}) }}"
   when: pool.open_basedir is not defined
 
-- name: install | fpm_pool | Set pool defaults max_children 
-  set_fact:
+- name: Config | fpm_pool | Set pool defaults max_children 
+  ansible.builtin.set_fact:
     pool: "{{ pool | combine({'max_children': phpfpm__pool_defaults_max_children}) }}"
   when: pool.max_children is not defined
 
-- name: install | fpm_pool | Set pool defaults min_spare_servers 
-  set_fact:
+- name: Config | fpm_pool | Set pool defaults min_spare_servers 
+  ansible.builtin.set_fact:
     pool: "{{ pool | combine({'min_spare_servers': phpfpm__pool_defaults_min_spare_servers}) }}"
   when: pool.min_spare_servers is not defined
 
-- name: install | fpm_pool | Set pool defaults max_spare_servers 
-  set_fact:
+- name: Config | fpm_pool | Set pool defaults max_spare_servers 
+  ansible.builtin.set_fact:
     pool: "{{ pool | combine({'max_spare_servers': phpfpm__pool_defaults_max_spare_servers}) }}"
   when: pool.max_spare_servers is not defined
 
-- name: install | fpm_pool | Set pool defaults start_servers 
-  set_fact:
-    pool: "{{ pool | combine({'start_servers': ( pool.min_spare_servers + (pool.max_spare_servers - pool.min_spare_servers) / 2 ) | int}) }}"
+- name: Config | fpm_pool | Set pool defaults start_servers 
+  ansible.builtin.set_fact:
+    pool: "{{ pool | combine({'start_servers': (pool.min_spare_servers + (pool.max_spare_servers - pool.min_spare_servers) / 2) | int}) }}"
   when: pool.start_servers is not defined
 
-- name: install | fpm_pool | Set pool defaults enable redis session handler
-  set_fact:
+- name: Config | fpm_pool | Set pool defaults enable redis session handler
+  ansible.builtin.set_fact:
     pool: "{{ pool | combine({'enable_redis_session_handler': false}) }}"
   when: pool.enable_redis_session_handler is not defined
 
-- name: install | fpm_pool | Set pool defaults enable_slowlog
-  set_fact:
+- name: Config | fpm_pool | Set pool defaults enable_slowlog
+  ansible.builtin.set_fact:
     pool: "{{ pool | combine({'enable_slowlog': phpfpm__pool_defaults_enable_slowlog}) }}"
   when: pool.enable_slowlog is not defined
 
-- name: config | fpm_pool | Remove preinstalled php fpm pool
-  file:
+- name: Config | fpm_pool | Remove preinstalled php fpm pool
+  ansible.builtin.file:
     path: '{{ phpfpm__server_app_path }}/pool.d/www.conf'
     state: absent
-  notify: 'restart php{{ phpfpm__version }}-fpm'
+  notify: 'Restart php{{ phpfpm__version }}-fpm'
 
-- name: config | fpm_pool | Configure php-fpm pool for vhosts
-  template:
+- name: Config | fpm_pool | Configure php-fpm pool for vhosts
+  ansible.builtin.template:
     src: fpm_pool/vhost_pool_conf.j2
     dest: "{{ phpfpm__server_app_path }}/pool.d/{{ pool.name }}.conf"
     owner: "root"
     group: "root"
     mode: 0644
-  notify: 'restart php{{ phpfpm__version }}-fpm'
+  notify: 'Restart php{{ phpfpm__version }}-fpm'
 
-- name: config | fpm_pool | Create vhost php_error.log
-  file:
+- name: Config | fpm_pool | Create vhost php_error.log
+  ansible.builtin.file:
     path: "{{ phpfpm__vhost_root }}/{{ pool.name }}/logs/php_error.log"
     owner: '{{ pool.username }}'
     group: '{{ pool.username }}'
@@ -75,8 +75,8 @@
     modification_time: preserve
     access_time: preserve
 
-- name: config | fpm_pool | Create vhost php_slow.log
-  file:
+- name: Config | fpm_pool | Create vhost php_slow.log
+  ansible.builtin.file:
     path: "{{ phpfpm__vhost_root }}/{{ pool.name }}/logs/php_slow.log"
     owner: '{{ pool.username }}'
     group: '{{ pool.username }}'
@@ -86,8 +86,8 @@
     access_time: preserve
   when: pool.enable_slowlog
 
-- name: config | fpm_pool | Ensure vhost sessions directory
-  file:
+- name: Config | fpm_pool | Ensure vhost sessions directory
+  ansible.builtin.file:
     path: "{{ phpfpm__vhost_root }}/{{ pool.name }}/sessions"
     owner: '{{ pool.username }}'
     group: '{{ pool.username }}'
@@ -95,8 +95,8 @@
     state: directory
   when: not pool.enable_redis_session_handler
 
-- name: config | fpm_pool | Ensure vhost tmp directory
-  file:
+- name: Config | fpm_pool | Ensure vhost tmp directory
+  ansible.builtin.file:
     path: "{{ phpfpm__vhost_root }}/{{ pool.name }}/tmp"
     owner: '{{ pool.username }}'
     group: '{{ pool.username }}'
