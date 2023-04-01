@@ -1,17 +1,17 @@
 ---
 # vars file for roles/phpfpm php config
 
-- name: config | php | Configure php-fpm php defaults
-  template:
+- name: Config | php | Configure php-fpm php defaults
+  ansible.builtin.template:
     src: '{{ phpfpm__php_config_defaults_fpm_template }}'
     dest: '/etc/php/{{ phpfpm__version }}/fpm/conf.d/{{ phpfpm__php_config_defaults_fpm_filename }}'
     owner: "root"
     group: "root"
     mode: 0644
-  notify: 'restart php{{ phpfpm__version }}-fpm'
+  notify: 'Restart php{{ phpfpm__version }}-fpm'
 
-- name: config | php | Configure php-fpm php cli defaults
-  template:
+- name: Config | php | Configure php-fpm php cli defaults
+  ansible.builtin.template:
     src: '{{ phpfpm__php_config_defaults_cli_template }}'
     dest: '/etc/php/{{ phpfpm__version }}/cli/conf.d/{{ phpfpm__php_config_defaults_cli_filename }}'
     owner: "root"

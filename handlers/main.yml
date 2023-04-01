@@ -1,27 +1,27 @@
 ---
 # handlers file for roles/phpfpm
 
-- name: 'restart php7.0-fpm'
-  service: 
+- name: 'Restart php7.0-fpm'
+  ansible.builtin.service: 
     name: php7.0-fpm
     state: restarted
 
-- name: 'restart php7.1-fpm'
-  service: 
+- name: 'Restart php7.1-fpm'
+  ansible.builtin.service: 
     name: php7.1-fpm
     state: restarted
 
-- name: 'restart php7.2-fpm'
-  service: 
+- name: 'Restart php7.2-fpm'
+  ansible.builtin.service: 
     name: php7.2-fpm
     state: restarted
 
-- name: 'restart php7.3-fpm'
-  service: 
+- name: 'Restart php7.3-fpm'
+  ansible.builtin.service: 
     name: php7.3-fpm
     state: restarted
 
-- name: 'restart php7.4-fpm'
-  service: 
+- name: 'Restart php7.4-fpm'
+  ansible.builtin.service: 
     name: php7.4-fpm
     state: restarted

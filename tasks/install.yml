@@ -6,51 +6,51 @@
 #    msg: "{{  phpfpm__version }}"
 
 - name: install | Add suryphp Apt signing key
-  apt_key:
+  ansible.builtin.apt_key:
     url: https://packages.sury.org/php/apt.gpg
     state: present
   when: phpfpm__default_version != phpfpm__version and ansible_distribution == 'Debian'
 
 - name: install | Add apt repository suryphp for debian
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main"
     state: present
   when: phpfpm__default_version != phpfpm__version and ansible_distribution == 'Debian'
 
 - name: install | Add ondrejphp Apt signing key
-  apt_key:
+  ansible.builtin.apt_key:
     keyserver: keyserver.ubuntu.com
     id: 14AA40EC0831756756D7F66C4F4EA0AAE5267A6C
     state: present
   when: phpfpm__default_version != phpfpm__version and ansible_distribution == 'Ubuntu'
 
 - name: install | Add apt repository ondrejphp
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb http://ppa.launchpad.net/ondrej/php/ubuntu {{ ansible_distribution_release }} main"
     state: present
   when: phpfpm__default_version != phpfpm__version and ansible_distribution == 'Ubuntu'
 
 - name: install | Install phpfpm and required packages for debian
-  apt: 
+  ansible.builtin.apt: 
     name: "{{ phpfpm__packages }}"
     update_cache: yes
     state: present
   when: ansible_os_family == 'Debian'
 
 - name: Generate debian package name for php modules (with php version)
-  set_fact:
+  ansible.builtin.set_fact:
     phpfpm__additional_packages: "{{ phpfpm__additional_packages | default([]) + ['php' ~ phpfpm__version ~ '-' ~ item] }}"
   when: item not in phpfpm__additional_php_modules_without_version
   loop: "{{ phpfpm__additional_php_modules }}"
 
 - name: Generate debian package name for php modules (without php version)
-  set_fact:
+  ansible.builtin.set_fact:
     phpfpm__additional_packages: "{{ phpfpm__additional_packages | default([]) + ['php-' ~ item] }}"
   when: item in phpfpm__additional_php_modules_without_version
   loop: "{{ phpfpm__additional_php_modules }}"
 
 - name: install | Install additional php modules for debian
-  apt: 
+  ansible.builtin.apt: 
     name: "{{ phpfpm__additional_packages }}"
     update_cache: yes
     state: present
