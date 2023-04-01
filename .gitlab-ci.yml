@@ -28,8 +28,8 @@ molecule:
   parallel:
     matrix:
       - MOLECULE_OS:
-          - debian9
           - debian10
+          - debian11
           - "ubuntu20.04"
           - "ubuntu22.04"
         MOLECULE_PLAYBOOK:
